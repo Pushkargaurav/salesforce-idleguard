@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types><members>IdleGuardController</members><members
+    >IdleGuardControllerTest</members><name>ApexClass</name></types>
+    <types><members>idleGuard</members><name
+    >LightningComponentBundle</name></types>
+    <types><members>IdleGuard_Exclusion__mdt</members><name
+    >CustomObject</name></types>
+    <types><members>IdleGuard_Manage_Users</members><name
+    >CustomPermission</name></types>
+    <types><members>IdleGuard_Admin</members><name>PermissionSet</name></types>
+    <types><members>IdleGuard</members><name>CustomTab</name></types>
+  <types><members
+    >IdleGuard_Exclusion__mdt-IdleGuard Exclusion Layout</members><name
+    >Layout</name></types>
+  <version>67.0</version>
+</Package>

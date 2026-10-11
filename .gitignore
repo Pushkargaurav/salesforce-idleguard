@@ -1,0 +1,20 @@
+# Local Salesforce authentication and caches
+.sf/
+.sfdx/
+.localdevserver/
+deploy-options.json
+# Dependencies, build output, and local configuration
+node_modules/
+.npm-cache/
+coverage/
+artifacts/
+.env
+.env.*
+*.key
+*.pem
+*.log
+.eslintcache
+.pmdCache
+.DS_Store
+Thumbs.db
+**/lwc/jsconfig.json

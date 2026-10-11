@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Allows approved administrators to review and deactivate dormant users through IdleGuard. Native Salesforce user-management permissions are also required.</description>
+    <isLicensed>false</isLicensed>
+    <label>Manage users with IdleGuard</label>
+</CustomPermission>

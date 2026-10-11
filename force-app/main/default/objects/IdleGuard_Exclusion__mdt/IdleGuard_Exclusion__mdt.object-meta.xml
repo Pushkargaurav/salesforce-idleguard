@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Protect integration, service, and emergency accounts from IdleGuard using a User ID or exact username.</description>
+    <label>IdleGuard Exclusion</label>
+    <pluralLabel>IdleGuard Exclusions</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

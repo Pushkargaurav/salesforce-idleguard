@@ -1,0 +1,187 @@
+<template>
+  <lightning-card title="IdleGuard" icon-name="standard:user">
+    <div class="guard-content">
+      <p class="subtitle">
+        Find, review, and safely deactivate dormant Salesforce users.
+      </p>
+      <template lwc:if={canManageUsers}>
+        <div class="filters">
+          <div>
+            <p class="slds-form-element__label">Filter by</p>
+            <lightning-button-group>
+              <lightning-button
+                label="Days inactive"
+                data-mode="days"
+                variant={daysVariant}
+                disabled={busy}
+                onclick={handleMode}
+              ></lightning-button>
+              <lightning-button
+                label="Date range"
+                data-mode="range"
+                variant={rangeVariant}
+                disabled={busy}
+                onclick={handleMode}
+              ></lightning-button>
+            </lightning-button-group>
+          </div>
+          <template lwc:if={isDaysMode}>
+            <lightning-input
+              type="number"
+              name="daysInactive"
+              label="Days since last login"
+              value={daysInactive}
+              min="1"
+              max="3650"
+              step="1"
+              required
+              disabled={busy}
+              onchange={handleFilterChange}
+            ></lightning-input>
+          </template>
+          <template lwc:else>
+            <div class="date-inputs">
+              <lightning-input
+                type="date"
+                name="startDate"
+                label="Start date"
+                value={startDate}
+                required
+                disabled={busy}
+                onchange={handleFilterChange}
+              ></lightning-input>
+              <lightning-input
+                type="date"
+                name="endDate"
+                label="End date"
+                value={endDate}
+                required
+                disabled={busy}
+                onchange={handleFilterChange}
+              ></lightning-input>
+            </div>
+          </template>
+          <lightning-button
+            class="find-button"
+            label="Find users"
+            variant="brand"
+            icon-name="utility:search"
+            disabled={busy}
+            onclick={search}
+          ></lightning-button>
+        </div>
+        <p class="filter-help">{filterHelp}</p>
+        <div
+          class="summary"
+          aria-label="Current review summary"
+          aria-live="polite"
+        >
+          <div class="summary-card">
+            <span class="summary-number">{userCount}</span
+            ><span>Inactive users listed</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number">{neverCount}</span
+            ><span>Never logged in</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number">{selectedCount}</span
+            ><span>Selected</span>
+          </div>
+        </div>
+        <template lwc:if={hasMore}>
+          <div class="notice warning" role="status">
+            <lightning-icon
+              icon-name="utility:warning"
+              size="x-small"
+              alternative-text="Warning"
+            ></lightning-icon>
+            <span
+              >More than 200 users match. Showing the first 200 by name.
+              Deactivate all applies only to this displayed batch. Narrow your
+              filter or review the next batch after deactivation.</span
+            >
+          </div>
+        </template>
+        <template lwc:if={errorMessage}>
+          <div class="notice error" role="alert">{errorMessage}</div>
+        </template>
+        <div class="table-region" aria-busy={busy}>
+          <template lwc:if={busy}
+            ><lightning-spinner
+              alternative-text="Processing IdleGuard request"
+              size="small"
+            ></lightning-spinner
+          ></template>
+          <template lwc:if={hasUsers}>
+            <lightning-datatable
+              key-field="userId"
+              data={users}
+              columns={columns}
+              selected-rows={selectedIds}
+              max-row-selection="200"
+              sorted-by={sortedBy}
+              sorted-direction={sortDirection}
+              onrowselection={handleSelection}
+              onsort={handleSort}
+            ></lightning-datatable>
+          </template>
+          <template lwc:elseif={showEmpty}>
+            <div class="empty-state">
+              <lightning-icon
+                icon-name="utility:check"
+                size="small"
+                alternative-text="No matches"
+              ></lightning-icon>
+              <p>No eligible inactive users match this filter.</p>
+              <p>
+                Protected accounts and the running administrator are excluded.
+              </p>
+            </div>
+          </template>
+          <template lwc:else>
+            <p class="review-prompt">
+              Choose your filter and select Find users to review a current list.
+            </p>
+          </template>
+        </div>
+        <div class="actions">
+          <lightning-button
+            data-action="selected"
+            label={selectedLabel}
+            icon-name="utility:user"
+            disabled={selectedDisabled}
+            onclick={handleDeactivateSelected}
+          ></lightning-button>
+          <lightning-button
+            data-action="all"
+            label={allLabel}
+            variant="destructive"
+            icon-name="utility:block_visitor"
+            disabled={allDisabled}
+            onclick={handleDeactivateAll}
+          ></lightning-button>
+        </div>
+        <template lwc:if={hasActionResults}>
+          <section class="results" aria-label="Deactivation results">
+            <h2 class="slds-text-heading_small">Deactivation results</h2>
+            <p class="result-summary" role="status">{resultSummary}</p>
+            <lightning-datatable
+              key-field="userId"
+              data={actionResults}
+              columns={resultColumns}
+              hide-checkbox-column
+            ></lightning-datatable>
+          </section>
+        </template>
+      </template>
+      <template lwc:else>
+        <div class="notice" role="status">
+          IdleGuard is available to approved Salesforce user administrators. Ask
+          your administrator to assign the IdleGuard Administrator permission
+          set.
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>
